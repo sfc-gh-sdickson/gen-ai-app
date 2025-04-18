@@ -8,7 +8,7 @@ This application provides a user-friendly interface to interact with Snowflake's
 
 ## Features
 
-- **Translation**: Translate text between 11 different languages using Snowflake Cortex
+- **Translation**: Translate text between 14 different languages using Snowflake Cortex
 - **Sentiment Analysis**: Analyze the sentiment of call transcripts
 - **Data Summarization**: Generate concise summaries of large text datasets
 - **Next Best Action**: Use foundation models to identify customer next actions
