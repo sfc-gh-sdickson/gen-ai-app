@@ -1,7 +1,5 @@
 # Snowflake Generative AI Tools
 
-![Snowflake Logo](Snowflake.svg)
-
 A Streamlit application that demonstrates various Generative AI capabilities powered by Snowflake Cortex and a variety of foundation models.
 
 ## Overview
