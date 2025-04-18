@@ -10,6 +10,9 @@ from snowflake.snowpark.functions import col
 from snowflake.snowpark import DataFrame
 from snowflake.snowpark.context import get_active_session
 
+# Constants
+images_stage = "images_stage"
+
 # Configure Streamlit page layout
 st.set_page_config(layout="wide")
 
@@ -39,11 +42,11 @@ def toolsapp():
             return svg_string
 
         # Load and display SVG images
-        svg_content = read_svg("Snowflake.svg")
-        svg_content2 = read_svg("Bear-Skater_ICE.svg")
-        st.image(svg_content, width=100)
+#        svg_content = read_svg("Snowflake.svg")
+#        svg_content2 = read_svg("Bear-Skater_ICE.svg")
+#        st.image(svg_content, width=100)
         st.header("Welcome to Your New Generative AI Tools App!")
-        st.image(svg_content2, width=500)
+#        st.image(svg_content2, width=500)
 
 def translate():
     with st.container():
@@ -383,80 +386,51 @@ def ensure_stage_exists(stage_name_no_at: str):
 # Main Streamlit app
 # -------------------------------------
 def mmimage():
-    st.title("Multi-Modal Image Categorizer")
-
-    # -------------------------
-    # Stage settings
-    # -------------------------
-    st.header("Stage Settings")
-    stage_name_no_at = st.text_input(
-        "Enter stage name (e.g., GENAI_STAGE)",
-        "GENAI_STAGE"
-    )
-    stage_name = f"@{stage_name_no_at}"
-
-    # Create stage if it doesn't exist
-    ensure_stage_exists(stage_name_no_at)
-
-    # -------------------------
-    # File upload
-    # -------------------------
-    
-    st.header("File Upload")
+    st.subheader("File Upload")
     st.write("Upload files to Snowflake stage.")
 
     uploaded_file = st.file_uploader("Choose a file")
 
     if uploaded_file:
-        model_instruct = """Please provide the type of animal, breed, and environment in JSON format: 
-        Animal: ??, 
-        Breed: ??, 
-        Environment: ??"""
-            
-        model_list = [
-        "claude-3-5-sonnet",
-        "pixtral-large"
-        ]
-        
         file_extension = os.path.splitext(uploaded_file.name)[1].lower()
         try:
             # Create file stream using BytesIO and upload
             file_stream = io.BytesIO(uploaded_file.getvalue())
             session.file.put_stream(
                 file_stream,
-                f"{stage_name}/{uploaded_file.name}",
+                f"{images_stage}/{uploaded_file.name}",
                 auto_compress=False,
                 overwrite=True
-                )
+            )
+            
             st.success(f"File '{uploaded_file.name}' has been uploaded successfully!")
-            st.image(uploaded_file)
-            selected_model = st.selectbox("Which Multi-Modal Model:", model_list)
-            if st.button("Image Details"):
-                cortex_response = session.sql(
-                f"select snowflake.cortex.complete('{selected_model}','{model_instruct}',TO_FILE('{stage_name}', '{uploaded_file.name}')) as RESPONSE").to_pandas().iloc[0]["RESPONSE"];
-                st.write(cortex_response)
-                
-            # Preview uploaded file
-            if file_extension in PREVIEWABLE_EXTENSIONS:
-                try:
-                    uploaded_file.seek(0)
-                    if file_extension == '.webp':
-                        try:
-                            df_preview = st.image(uploaded_file)
-                        except UnicodeDecodeError:
-                            uploaded_file.seek(0)
-                            df_preview = pd.read_csv(uploaded_file, encoding='shift-jis')
-                    else:  # .txt, .tsv, etc.
-                        try:
-                            df_preview = pd.read_csv(uploaded_file, sep='\t')
-                        except UnicodeDecodeError:
-                            uploaded_file.seek(0)
-                            df_preview = pd.read_csv(uploaded_file, sep='\t', encoding='shift-jis')
 
-                        st.write("Preview of uploaded data:")
-                        st.dataframe(df_preview.head())
-                except Exception as e:
-                    st.error(f"Error occurred while uploading file: {str(e)}")
+            # Define image in a stage and read the file
+            image_file=session.file.get_stream(f'@{images_stage}/{uploaded_file.name}' , decompress=False).read() 
+
+            # Display the image
+            st.image(image_file, width=300)
+
+            llm_selection = st.selectbox(
+                "Select an Large Language Model:",
+                options=["claude-3-5-sonnet", "pixtral-large"]
+            )
+            
+            user_prompt = st.text_input(
+                "Enter a prompt for the AI model:",
+                value="Please provide a concise description of this image."
+            )
+
+            if st.button("Run AI Model"):
+                if user_prompt:
+                    image_text = session.sql(f"""
+                        SELECT SNOWFLAKE.CORTEX.COMPLETE('{llm_selection}',
+                            'Please provide a concise description of this image.',
+                            TO_FILE('@{images_stage}', '{uploaded_file.name}')
+                        );""").collect()
+            
+                    st.write(image_text[0][0])
+        
         except Exception as e:
             st.error(f"Error occurred while uploading file: {str(e)}")
 
