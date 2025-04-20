@@ -8,7 +8,6 @@ import io
 from snowflake.snowpark.context import get_active_session
 from snowflake.snowpark.functions import col
 from snowflake.snowpark import DataFrame
-from snowflake.snowpark.context import get_active_session
 
 # Configure Streamlit page layout
 st.set_page_config(layout="wide")
