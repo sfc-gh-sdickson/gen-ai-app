@@ -1,6 +1,6 @@
 # Snowflake Generative AI Tools
 
-![Snowflake Logo](Snowflake.svg)
+![Snowflake Logo](Snowflake.svg, size=100)
 
 A Streamlit application that demonstrates various Generative AI capabilities powered by Snowflake Cortex and a variety of foundation models.
 
@@ -24,13 +24,12 @@ This application provides a user-friendly interface to interact with Snowflake's
 
 The application supports a wide range of foundation models including:
 
-- Claude 3.5 Sonnet
+- Claude 3.5 Sonnet - Primary Model for this Project
 - Snowflake Arctic
 - Llama 4 (Maverick and Scout)
 - Deepseek R1
 - Mistral Large/Large2
 - Reka models
-- Jamba models
 - Mixtral
 - Llama 3/3.1/3.2 variants
 - And more...
