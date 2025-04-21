@@ -7,6 +7,8 @@ feedback link: https://github.com/Snowflake-Labs/sfguides/issues
 tags: Snowflake Cortex, Generative AI, Streamlit, Snowflake, Data Applications, Multimodal AI
 author: Sean Morris, Stephen Dickson
 
+[environment_name]: ai209
+
 # Unlock Insights from Unstructured Data with Snowflake Cortex AI
 <!-- ------------------------ -->
 ## Overview
@@ -75,24 +77,22 @@ In the same SQL worksheet, run the following SQL commands to create the [warehou
 USE ROLE sysadmin;
 
 -- set warehouse context
-CREATE WAREHOUSE IF NOT EXISTS [environment_name]_wh
+CREATE WAREHOUSE IF NOT EXISTS ai209_wh
     WAREHOUSE_SIZE = XSMALL
     AUTO_SUSPEND = 60
     INITIALLY_SUSPENDED = TRUE;
-USE WAREHOUSE [environment_name]_wh;
+USE WAREHOUSE ai209_wh;
 
 -- set database and schema context
-CREATE DATABASE IF NOT EXISTS [environment_name]_db;
-CREATE SCHEMA IF NOT EXISTS [environment_name]_db.public;
+CREATE DATABASE IF NOT EXISTS ai209_db;
+CREATE SCHEMA IF NOT EXISTS ai209_db.public;
 USE SCHEMA ai209_db.public;
 
 -- create stage to store images
-CREATE STAGE IF NOT EXISTS [environment_name]_db.public.images_stage
+CREATE STAGE IF NOT EXISTS ai209_db.public.images_stage
     DIRECTORY = (ENABLE = TRUE)
     ENCRYPTION = (TYPE = 'SNOWFLAKE_SSE');
 ```
-
-[environment_name]: ai209
 
 ### Download Images
 
@@ -108,11 +108,10 @@ Navigate back to your SQL worksheet and run the following SQL commands to verify
 
 ```sql
 -- list files in stage
-LIST @[environment_name]_db.public.images_stage;
+LIST @ai209_db.public.images_stage;
 ```
 
-You should see your uploaded files listed with their sizes.
-
+You should see your uploaded files listed with the associated sizes.
 
 <!-- ------------------------ -->
 ## Create Snowflake Notebook
