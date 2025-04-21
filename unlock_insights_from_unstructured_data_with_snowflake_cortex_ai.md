@@ -25,7 +25,7 @@ It shows how to translate, summarize, classify text, generate emails, and even a
 ### What You’ll Learn
 - How to create a database, schema, and stage in Snowflake
 - How to store unstructured data in Snowflake stages
-- How to use SQL to run LLM functions (`TRANSLATE`, `SENTIMENT`, `SUMMARIZE`, `COMPLETE`)
+- How to use SQL to execute LLM functions (`TRANSLATE`, `SENTIMENT`, `SUMMARIZE`, `COMPLETE`)
 - How to build a frontend application with Streamlit inside Snowflake
 
 ### What You'll Build
@@ -102,16 +102,14 @@ Download the [images.zip](https://github.com/Snowflake-Labs/unlock-insights-from
 
 In the Snowsight UI on the left hand sidebar, select the **Data > Databases** tab and navigate to **AI209_DB > PUBLIC > STAGE > IMAGES_STAGE**.
 
-In the top right hand corner, click **+ Files** to upload files to your stage.
+In the top right hand corner, click **+ Files** to upload files to the stage.
 
-Navigate back to your SQL worksheet and run the following SQL commands to verify the images with SQL:
+Navigate back to the SQL worksheet and run the following SQL commands to verify the files have been uploaded:
 
 ```sql
 -- list files in stage
 LIST @ai209_db.public.images_stage;
 ```
-
-You should see your uploaded files listed with the associated sizes.
 
 <!-- ------------------------ -->
 ## Create Snowflake Notebook
