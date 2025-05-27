@@ -18,7 +18,6 @@ This application provides a user-friendly interface to interact with Snowflake's
 - **Text Classification**: Categorize text into predefined categories
 - **Email Generation**: Create customer emails based on call transcripts
 - **Question Answering**: Ask questions to foundation models
-- **Code Conversion**: Convert code for use in Snowflake SQL
 - **Multi-Modal Image Analysis**: Analyze and categorize images using multi-modal models
 
 ## Supported Models
