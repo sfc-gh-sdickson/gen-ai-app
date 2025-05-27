@@ -76,6 +76,8 @@ The application creates a Snowflake stage if it doesn't exist and allows you to 
 - .jpg
 - .jpeg
 - .gif
+- .webp
+- .img
 - .mp3
 
 ## Notes
