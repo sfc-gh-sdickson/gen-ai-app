@@ -6,10 +6,11 @@ A Streamlit application that demonstrates various Generative AI capabilities pow
 
 ## Overview
 
-This application provides a user-friendly interface to interact with Snowflake's Generative AI capabilities through Streamlit. It leverages Snowflake Cortex and various LLM models to demonstrate different AI functionalities such as translation, sentiment analysis, data summarization, text classification, and more.
+This application provides a user-friendly interface to interact with Snowflake's Generative AI capabilities through Streamlit. It leverages Snowflake Cortex and various LLM models to demonstrate different AI functionalities such as transcription, translation, sentiment analysis, data summarization, text classification, and more.
 
 ## Features
 
+- **Transcription**: Transcribe audio files using Snowflake Cortex
 - **Translation**: Translate text between 11 different languages using Snowflake Cortex
 - **Sentiment Analysis**: Analyze the sentiment of call transcripts
 - **Data Summarization**: Generate concise summaries of large text datasets
@@ -24,15 +25,14 @@ This application provides a user-friendly interface to interact with Snowflake's
 
 The application supports a wide range of foundation models including:
 
-- Claude 3.5 Sonnet
+- Claude 4 Sonnet
+- Claude 3.7 Sonnet
 - Snowflake Arctic
 - Llama 4 (Maverick and Scout)
 - Deepseek R1
 - Mistral Large/Large2
 - Reka models
-- Jamba models
 - Mixtral
-- Llama 3/3.1/3.2 variants
 - And more...
 
 ## Prerequisites
@@ -51,12 +51,17 @@ The application supports a wide range of foundation models including:
 
 1. Run the Streamlit app:
    ```
-   streamlit run streamlit_app.py
+   This is designed to be run inside of Snowflake: "Streamlit in Snowflake"
    ```
 
 2. Use the sidebar to navigate between different Generative AI tools
 
-3. For Multi-Modal Image Analysis:
+3. For Multi-Modal Audio Transcription:
+   - Upload an audio file
+   - Play the audio file
+   - Get detailed transcription in JSON format
+
+4. For Multi-Modal Image Analysis:
    - Upload an image file
    - Select a multi-modal model (Claude 3.5 Sonnet or Pixtral Large)
    - Get detailed information about the image in JSON format
@@ -67,6 +72,11 @@ The application creates a Snowflake stage if it doesn't exist and allows you to 
 - .csv
 - .txt
 - .tsv
+- .png
+- .jpg
+- .jpeg
+- .gif
+- .mp3
 
 ## Notes
 
@@ -79,8 +89,8 @@ The application creates a Snowflake stage if it doesn't exist and allows you to 
 Here's an example of how the application calls Snowflake Cortex for sentiment analysis:
 
 ```python
-cortex_response = session.sql(
-    f"select snowflake.cortex.sentiment('{entered_transcript}') as sentiment"
+sent_cortex_response = session.sql(
+    f"select snowflake.cortex.sentiment('{sent_entered_transcript}') as sentiment"
 ).to_pandas()
 ```
 
@@ -88,10 +98,4 @@ cortex_response = session.sql(
 
 You can customize the model prompts, the list of available models, and other parameters according to your specific use case.
 
-## License
 
-[Insert your license information here]
-
-## Contributing
-
-[Insert contribution guidelines here]
